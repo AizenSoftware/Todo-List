@@ -1,9 +1,7 @@
 const form = document.querySelector("#new-task-form");
 const input = document.querySelector("#new-task-input");
 const list_el = document.querySelector("#tasks");
-let deleteBtn;
-let editBtn;
-let saveBtn;
+
 function startConf() {
   const todos = JSON.parse(localStorage.getItem("todos"));
   if (!todos) {
@@ -13,9 +11,9 @@ function startConf() {
       addHtml(td);
     });
   }
-  editBtn = document.querySelectorAll(".edit");
-  deleteBtn = document.querySelectorAll(".delete");
-  saveBtn = document.querySelectorAll(".save");
+
+
+
 }
 startConf();
 
@@ -76,18 +74,22 @@ function addTodo(e) {
 }
 
 function deleteTodo(e) {
-  const todo = e.target.parentElement.parentElement;
-  const todoText = todo.firstChild.firstChild.value;
-
-  let todos = JSON.parse(localStorage.getItem("todos"));
-
-  todos = todos.filter((td) => td.text != todoText);
-  localStorage.setItem("todos", JSON.stringify(todos));
-
-  todo.remove();
+  if(e.target.classList[0]=== "delete"){
+    const todo = e.target.parentElement.parentElement;
+    const todoText = todo.firstChild.firstChild.value;
+  
+    let todos = JSON.parse(localStorage.getItem("todos"));
+  
+    todos = todos.filter((td) => td.text != todoText);
+    localStorage.setItem("todos", JSON.stringify(todos));
+  
+    todo.remove();
+  }
+  
 }
 
 function editTodo(e) {
+ if(e.target.classList[0] === "edit"){
   const todoElement = e.target.parentElement.parentElement;
   const todoText = todoElement.firstChild.firstChild;
   const editButton = todoElement.children[1].firstChild;
@@ -117,8 +119,9 @@ function editTodo(e) {
     localStorage.setItem("todos", JSON.stringify(todos));
     addHtml(todo);
   }
+ }
 }
 
 form.addEventListener("submit", addTodo);
-deleteBtn.forEach((btn) => btn.addEventListener("click", deleteTodo));
-editBtn.forEach((btn) => btn.addEventListener("click", editTodo));
+addEventListener("click", deleteTodo);
+addEventListener("click", editTodo);
